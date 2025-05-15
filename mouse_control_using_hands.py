@@ -21,7 +21,18 @@ while True:
             for id, lm in enumerate(one_hand_landmarks):
                 x = int(lm.x * image_width)
                 y = int(lm.y * image_height)
-                #print(x,y)
+                print(x,y)
+
+             if id == 8:
+                    mouse_x = int(screen_width / image_width * x)
+                    mouse_y = int(screen_height / image_height * y)
+                    cv2.circle(image,(x,y), 3,(0,255,255))
+                    pyautogui.moveTo(mouse_x,mouse_y)
+                    
+
+                if id == 4:
+                
+                    cv2.circle(image,(x,y), 3,(0,255,255))
     cv2.imshow("Hand movement video capture", image)
     key = cv2.waitKey(100)
     if key == 27:
