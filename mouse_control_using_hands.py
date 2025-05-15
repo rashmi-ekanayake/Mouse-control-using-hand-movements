@@ -4,7 +4,10 @@ import pyautogui
 
 capture_hands = mediapipe.solutions.hands.Hands()
 drawing_option = mediapipe.solutions.drawing_utils
+screen_width, screen_height = pyautogui.size()
+
 camera = cv2.VideoCapture(0)
+x1 = y1 = x2 = y2 = 0
 while True:
     _,image = camera.read()
     image_height,image_width,_ = image.shape
@@ -21,18 +24,25 @@ while True:
             for id, lm in enumerate(one_hand_landmarks):
                 x = int(lm.x * image_width)
                 y = int(lm.y * image_height)
-                print(x,y)
-
-             if id == 8:
+                #print(x,y)
+                if id == 8:
                     mouse_x = int(screen_width / image_width * x)
                     mouse_y = int(screen_height / image_height * y)
                     cv2.circle(image,(x,y), 3,(0,255,255))
                     pyautogui.moveTo(mouse_x,mouse_y)
-                    
+                    x1 = x
+                    y1 = y
 
                 if id == 4:
-                
+                    x2 = x
+                    y2 = y
                     cv2.circle(image,(x,y), 3,(0,255,255))
+        dist = y2 - y1
+        print(dist)
+        if(dist < 40):
+            print("clicked!")
+            pyautogui.click()
+
     cv2.imshow("Hand movement video capture", image)
     key = cv2.waitKey(100)
     if key == 27:
